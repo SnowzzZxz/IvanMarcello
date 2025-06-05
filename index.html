@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hability - Meus Cursos</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://img.freepik.com/fotos-gratis/lamborghini-aventador-na-chuva_23-2151955620.jpg?semt=ais_hybrid&w=740') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
+    }
+
+    .header {
+      text-align: center;
+      padding: 100px 20px 30px;
+      color: #fff;
+      z-index: 2;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 20px;
+      color: #ddd;
+    }
+
+    .section-title {
+      font-size: 24px;
+      color: #fff;
+      text-align: center;
+      margin: 40px auto 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 10px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 25px;
+      width: 300px;
+      color: #fff;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      scroll-margin-top: 80px;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: rgba(88, 101, 242, 0.9);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background-color: rgba(88, 101, 242, 1);
+      transform: scale(1.05);
+    }
+
+    .bottom-space {
+      height: 100px;
+    }
+
+    /* Responsividade para mobile */
+    @media (max-width: 600px) {
+      .menu a {
+        margin: 0 10px;
+        font-size: 14px;
+      }
+      .card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="rain"></canvas>
+
+  <div class="menu">
+    <a href="#excel">Excel</a>
+    <a href="#word">Word</a>
+    <a href="#powerpoint">PowerPoint</a>
+  </div>
+
+  <div class="header">
+    <h1>Ivan Marcello</h1>
+    <p>📚 Meus Cursos </p>
+  </div>
+
+  <h2 class="section-title">🎓 Cursos Concluídos</h2>
+
+  <div class="container">
+    <!-- Curso 1 - Excel -->
+    <div class="card" id="excel">
+      <h2>Excel </h2>
+      <p>Fundação Bradesco</p>
+      <a href="certificados/excel.pdf" class="btn" target="_blank">Ver Certificado</a>
+    </div>
+
+    <!-- Curso 2 - Word -->
+    <div class="card" id="word">
+      <h2>Word</h2>
+      <p>Fundação Bradesco</p>
+      <a href="certificados/word.pdf" class="btn" target="_blank">Ver Certificado</a>
+    </div>
+
+    <!-- Curso 3 - PowerPoint -->
+    <div class="card" id="powerpoint">
+      <h2>PowerPoint</h2>
+      <p>Fundação Bradesco</p>
+      <a href="certificados/powerpoint.pdf" class="btn" target="_blank">Ver Certificado</a>
+    </div>
+  </div>
+
+  <div class="bottom-space"></div>
+
+  <script>
+    // Efeito de chuva
+    const canvas = document.getElementById('rain');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const drops = Array.from({ length: 250 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      length: Math.random() * 20 + 10,
+      speed: Math.random() * 4 + 4
+    }));
+
+    function drawRain() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      drops.forEach(drop => {
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x, drop.y + drop.length);
+        ctx.stroke();
+      });
+      updateRain();
+      requestAnimationFrame(drawRain);
+    }
+
+    function updateRain() {
+      drops.forEach(drop => {
+        drop.y += drop.speed;
+        if (drop.y > height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * width;
+        }
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    drawRain();
+  </script>
+</body>
+</html>
